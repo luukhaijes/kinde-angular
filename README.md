@@ -5,12 +5,12 @@ Kinde integration for Angular
 ## Quick setup
 
 ```bash
-npm i tbd
+npm i kinde-angular
 ```
 
 import module to your app module
 ```typescript
-import { KindeModule } from 'tbd';
+import { KindeAngularModule } from 'kinde-angular';
 ```
 
 Add KindeModule to your imports

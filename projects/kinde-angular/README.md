@@ -1,24 +1,44 @@
 # KindeAngular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
+Kinde integration for Angular
 
-## Code scaffolding
+## Quick setup
 
-Run `ng generate component component-name --project kinde-angular` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project kinde-angular`.
-> Note: Don't forget to add `--project kinde-angular` or else it will be added to the default project in your `angular.json` file. 
+```bash
+npm i kinde-angular
+```
 
-## Build
+import module to your app module
+```typescript
+import { KindeAngularModule } from 'kinde-angular';
+```
 
-Run `ng build kinde-angular` to build the project. The build artifacts will be stored in the `dist/` directory.
+Add KindeModule to your imports
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    KindeAngularModule.forRoot({
+      clientId: 'client_id_here',
+      authDomain: 'https://domain.kinde.com',
+      redirectURL: 'http://localhost:4200/',
+      logoutRedirectURL: 'http://localhost:4200/',
+    })
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-## Publishing
-
-After building your library with `ng build kinde-angular`, go to the dist folder `cd dist/kinde-angular` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test kinde-angular` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Add KindeService to your component via contructor or Inject method
+```typescript
+  constructor(private authService: KindeAngularService){
+  }
+```
+Or
+```typescript
+  const authService = inject(KindeAngularService);
+```
