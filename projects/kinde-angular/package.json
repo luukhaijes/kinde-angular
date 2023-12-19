@@ -9,5 +9,13 @@
     "tslib": "^2.3.0",
     "@kinde-oss/kinde-typescript-sdk": "^2.4.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luukhaijes/kinde-angular.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Luuk Haijes"
+  },
   "sideEffects": false
 }

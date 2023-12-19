@@ -1,27 +1,44 @@
 # KindeAngular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.5.
+Kinde integration for Angular
 
-## Development server
+## Quick setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+npm i tbd
+```
 
-## Code scaffolding
+import module to your app module
+```typescript
+import { KindeModule } from 'tbd';
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Add KindeModule to your imports
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    KindeAngularModule.forRoot({
+      clientId: 'client_id_here',
+      authDomain: 'https://domain.kinde.com',
+      redirectURL: 'http://localhost:4200/',
+      logoutRedirectURL: 'http://localhost:4200/',
+    })
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Add KindeService to your component via contructor or Inject method
+```typescript
+  constructor(private authService: KindeAngularService){
+  }
+```
+Or
+```typescript
+  const authService = inject(KindeAngularService);
+```
