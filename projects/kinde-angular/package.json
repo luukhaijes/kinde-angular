@@ -17,5 +17,6 @@
   "author": {
     "name": "Luuk Haijes"
   },
+  "description": "Angular wrapper for the Kinde TypeScript SDK",
   "sideEffects": false
 }
