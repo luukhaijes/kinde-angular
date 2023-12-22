@@ -13,7 +13,6 @@ export class AuthStateService {
   isLoading$ = this.isLoadingSubject$.asObservable();
   isAuthenticatedStream$ = this.isLoading$.pipe(
     filter(isLoading => {
-      console.log('filter', isLoading);
       return !isLoading;
     }),
     distinctUntilChanged(),
@@ -22,7 +21,6 @@ export class AuthStateService {
     )
   );
   isAuthenticated$ = this.isAuthenticatedStream$.pipe(
-    tap(isAuthenticated => console.log('la', isAuthenticated)),
     distinctUntilChanged(),
     shareReplay(1)
   )
