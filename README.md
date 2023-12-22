@@ -1,4 +1,4 @@
-# ⚠️ This package is still in development and not ready for production use
+# ⚠️ This package is still in development and may not ready for production use
 
 # KindeAngular
 

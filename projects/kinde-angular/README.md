@@ -1,3 +1,5 @@
+# ⚠️ This package is still in development and may not ready for production use
+
 # KindeAngular
 
 Kinde integration for Angular
