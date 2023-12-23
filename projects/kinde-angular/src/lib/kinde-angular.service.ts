@@ -1,14 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { defer, filter, from, iif, map, Observable, of, switchMap, tap } from "rxjs";
+import { defer, from, iif, map, Observable, of, switchMap, tap } from "rxjs";
 import { factoryToken } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
+import { UserType } from "@kinde-oss/kinde-typescript-sdk";
 
 @Injectable({
   providedIn: 'root'
 })
 export class KindeAngularService {
-  // user: Object = this.kindeClientFactoryService.getUser();
+  user$: Observable<UserType | null> = this.authState.user$;
   isAuthenticated$: Observable<boolean> = this.authState.isAuthenticated$;
   isLoading$: Observable<boolean> = this.authState.isLoading$;
 

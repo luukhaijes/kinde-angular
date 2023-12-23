@@ -1,5 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, filter, ReplaySubject, distinctUntilChanged, switchMap, defer, shareReplay, tap } from "rxjs";
+import {
+  BehaviorSubject,
+  filter,
+  ReplaySubject,
+  distinctUntilChanged,
+  switchMap,
+  defer,
+  shareReplay,
+  concatMap,
+  of
+} from "rxjs";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { factoryToken } from "./kinde-client-factory.service";
 
@@ -20,9 +30,16 @@ export class AuthStateService {
       defer(() => this.kindeClient.isAuthenticated())
     )
   );
+
   isAuthenticated$ = this.isAuthenticatedStream$.pipe(
     distinctUntilChanged(),
     shareReplay(1)
+  );
+
+  user$ = this.isAuthenticatedStream$.pipe(
+    concatMap(isAuthenticated =>
+      isAuthenticated ? this.kindeClient.getUser() : of(null)
+    ),
   )
   constructor(@Inject(factoryToken) private kindeClient: KindeClient) {
   }
