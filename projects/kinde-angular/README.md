@@ -1,5 +1,5 @@
-# ⚠️ This package is still in development and may not ready for production use
-
+## ⚠️ This package is still in development and may not ready for production use
+For issues and feature requests please use [GitHub Issues](https://github.com/luukhaijes/kinde-angular/issues)
 # KindeAngular
 
 Kinde integration for Angular
