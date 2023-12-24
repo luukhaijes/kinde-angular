@@ -1,6 +1,6 @@
 {
   "name": "kinde-angular",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "peerDependencies": {
     "@angular/common": "^17.0.0",
     "@angular/core": "^17.0.0",
@@ -19,5 +19,12 @@
     "name": "Luuk Haijes"
   },
   "description": "Angular wrapper for the Kinde TypeScript SDK",
-  "sideEffects": false
+  "sideEffects": false,
+  "keywords": [
+    "angular",
+    "kinde",
+    "typescript",
+    "sdk",
+    "auth"
+  ]
 }
