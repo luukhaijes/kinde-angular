@@ -10,6 +10,7 @@ import { of } from "rxjs";
 export class AppComponent implements OnInit {
   title = 'playground';
   isAuth = this.authService.isAuthenticated$;
+  token = this.authService.accessToken$;
   constructor(private authService: KindeAngularService){
   }
 

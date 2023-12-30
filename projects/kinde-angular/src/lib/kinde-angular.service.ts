@@ -13,6 +13,7 @@ export class KindeAngularService {
   user$: Observable<UserType | null> = this.authState.user$;
   isAuthenticated$: Observable<boolean> = this.authState.isAuthenticated$;
   isLoading$: Observable<boolean> = this.authState.isLoading$;
+  accessToken$: Observable<string | null> = this.authState.accessToken$;
 
   constructor(
     @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
@@ -57,6 +58,8 @@ export class KindeAngularService {
   async handleCallback() {
     try {
       await this.kindeClient.handleRedirectToApp(new URL(window.location.toString()));
+      const token = await this.kindeClient.getToken();
+      this.authState.setAccessToken(token);
     } catch (e) {
       console.log(e);
     }

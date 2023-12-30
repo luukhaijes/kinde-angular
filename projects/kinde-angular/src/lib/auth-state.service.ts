@@ -8,17 +8,33 @@ import {
   defer,
   shareReplay,
   concatMap,
-  of
+  of,
+  scan,
+  merge,
+  mergeMap
 } from "rxjs";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
+
+interface TokenStreamState {
+  prev: string | null;
+  current: string | null;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthStateService {
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
-  private accessToken$ = new ReplaySubject<string>(1);
+  private _accessToken$ = new ReplaySubject<string>(1);
+
+  private accessTokenStream$ = this._accessToken$.pipe(
+    scan((acc: TokenStreamState, token: string) => ({
+      prev: acc.current,
+      current: token,
+    }), { prev: null, current: null }),
+    filter(state => state.current !== state.prev),
+  );
 
   isLoading$ = this.isLoadingSubject$.asObservable();
   isAuthenticatedStream$ = this.isLoading$.pipe(
@@ -27,7 +43,12 @@ export class AuthStateService {
     }),
     distinctUntilChanged(),
     switchMap(() =>
-      defer(() => this.kindeClient.isAuthenticated())
+      merge(
+        defer(() => this.kindeClient.isAuthenticated()),
+        this.accessTokenStream$.pipe(
+          mergeMap(() => this.kindeClient.isAuthenticated()),
+        )
+      )
     )
   );
 
@@ -40,6 +61,12 @@ export class AuthStateService {
     concatMap(isAuthenticated =>
       isAuthenticated ? this.kindeClient.getUser() : of(null)
     ),
+  );
+
+  accessToken$ = this.isAuthenticatedStream$.pipe(
+    concatMap(isAuthenticated =>
+      isAuthenticated ? this.kindeClient.getToken() : of(null)
+    ),
   )
   constructor(@Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient) {
   }
@@ -49,6 +76,6 @@ export class AuthStateService {
   }
 
   setAccessToken(accessToken: string) {
-    this.accessToken$.next(accessToken);
+    this._accessToken$.next(accessToken);
   }
 }

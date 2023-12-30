@@ -4,3 +4,7 @@
 
 export * from './lib/kinde-angular.service';
 export * from './lib/kinde-angular.module';
+
+export {
+  GrantType,
+} from '@kinde-oss/kinde-typescript-sdk';
