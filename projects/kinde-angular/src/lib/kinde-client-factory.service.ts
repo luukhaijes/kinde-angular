@@ -15,4 +15,4 @@ export class KindeClientFactory {
   }
 }
 
-export const factoryToken = new InjectionToken<KindeClientFactory>('factoryToken');
+export const KINDE_FACTORY_TOKEN = new InjectionToken<KindeClientFactory>('KINDE_FACTORY_TOKEN');

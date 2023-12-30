@@ -11,7 +11,7 @@ import {
   of
 } from "rxjs";
 import { KindeClient } from "./interfaces/kinde-client.interface";
-import { factoryToken } from "./kinde-client-factory.service";
+import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +41,7 @@ export class AuthStateService {
       isAuthenticated ? this.kindeClient.getUser() : of(null)
     ),
   )
-  constructor(@Inject(factoryToken) private kindeClient: KindeClient) {
+  constructor(@Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient) {
   }
 
   setIsLoading(isLoading: boolean) {

@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { defer, from, iif, map, Observable, of, switchMap, tap } from "rxjs";
-import { factoryToken } from "./kinde-client-factory.service";
+import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
 import { UserType } from "@kinde-oss/kinde-typescript-sdk";
+import { LOCATION_TOKEN } from "./tokens/location.token";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class KindeAngularService {
   isLoading$: Observable<boolean> = this.authState.isLoading$;
 
   constructor(
-    @Inject(factoryToken) private kindeClient: KindeClient,
+    @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
+    @Inject(LOCATION_TOKEN) private location: Location,
     private authState: AuthStateService
   ) {
     this.shouldHandleCallback()
@@ -36,16 +38,16 @@ export class KindeAngularService {
 
   async login() {
     const loginUrl = await this.kindeClient.login();
-    window.location.href = loginUrl.href;
+    this.location.href = loginUrl.href;
   }
 
   async logout() {
     const logoutUrl = await this.kindeClient.logout();
-    window.location.href = logoutUrl.href;
+    this.location.href = logoutUrl.href;
   }
 
   private shouldHandleCallback() {
-    return of(window.location.search)
+    return of(this.location.search)
       .pipe(
         map(search => new URLSearchParams(search)),
         map(params => params.has('code') || params.has('state'))

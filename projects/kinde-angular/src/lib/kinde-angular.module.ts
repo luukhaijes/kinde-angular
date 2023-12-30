@@ -1,8 +1,9 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { KindeAngularService } from "./kinde-angular.service";
-import { factoryToken, KindeClientFactory } from "./kinde-client-factory.service";
+import { KINDE_FACTORY_TOKEN, KindeClientFactory } from "./kinde-client-factory.service";
 import { KindeConfigInterface } from "./interfaces/kinde-config.interface";
 import { kindeConfigToken } from "./tokens/config.token";
+import { LOCATION_TOKEN } from "./tokens/location.token";
 
 @NgModule()
 export class KindeAngularModule {
@@ -11,12 +12,13 @@ export class KindeAngularModule {
       ngModule: KindeAngularModule,
       providers: [
         KindeAngularService,
+        { provide: LOCATION_TOKEN, useValue: window.location },
         {
           provide: kindeConfigToken,
           useValue: config
         },
         {
-          provide: factoryToken,
+          provide: KINDE_FACTORY_TOKEN,
           useFactory: KindeClientFactory.createClient,
           deps: [kindeConfigToken]
         }
