@@ -1,6 +1,6 @@
 {
   "name": "kinde-angular",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
