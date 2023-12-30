@@ -25,5 +25,5 @@ jobs:
     - name: Enabling pre-post scripts
       run: pnpm config set enable-pre-post-scripts true
     - run: pnpm install
-    - run: pnpm build
-    - run: pnpm test
+    - run: pnpm build kinde-angular
+    - run: pnpm test-ci kinde-angular
