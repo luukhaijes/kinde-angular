@@ -46,6 +46,9 @@ dependencies:
     version: 0.14.2
 
 devDependencies:
+  '@angular-builders/jest':
+    specifier: ^17.0.0
+    version: 17.0.0(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.7)(jest@29.7.0)(typescript@5.2.2)
   '@angular-devkit/build-angular':
     specifier: ^17.0.6
     version: 17.0.8(@angular/compiler-cli@17.0.8)(@types/node@20.10.6)(jest@29.7.0)(ng-packagr@17.0.3)(typescript@5.2.2)
@@ -66,10 +69,13 @@ devDependencies:
     version: 29.7.0(@types/node@20.10.6)(ts-node@10.9.2)
   jest-preset-angular:
     specifier: ^13.1.4
-    version: 13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.2)(jest@29.7.0)(typescript@5.2.2)
+    version: 13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.7)(jest@29.7.0)(typescript@5.2.2)
   ng-packagr:
     specifier: ^17.0.0
     version: 17.0.3(@angular/compiler-cli@17.0.8)(tslib@2.6.2)(typescript@5.2.2)
+  ts-jest:
+    specifier: ^29.1.1
+    version: 29.1.1(@babel/core@7.23.7)(esbuild@0.19.11)(jest@29.7.0)(typescript@5.2.2)
   ts-node:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.10.6)(typescript@5.2.2)
@@ -85,6 +91,38 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
+    dev: true
+
+  /@angular-builders/jest@17.0.0(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.7)(jest@29.7.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-6Nt8lak3kVynJLIaTXyKCV2UQ0lsgowhPhOJ/9OJUPyDytXbRfXbbE+09rI8pMPS9eUlAv+WMLjO8P3iz6JrOA==}
+    engines: {node: ^14.20.0 || ^16.13.0 || >=18.10.0}
+    peerDependencies:
+      '@angular-devkit/build-angular': ^17.0.0
+      '@angular/compiler-cli': ^17.0.0
+      '@angular/core': ^17.0.0
+      '@angular/platform-browser-dynamic': ^17.0.0
+      jest: '>=29'
+    dependencies:
+      '@angular-devkit/architect': 0.1700.8(chokidar@3.5.3)
+      '@angular-devkit/build-angular': 17.0.8(@angular/compiler-cli@17.0.8)(@types/node@20.10.6)(jest@29.7.0)(ng-packagr@17.0.3)(typescript@5.2.2)
+      '@angular-devkit/core': 17.0.8(chokidar@3.5.3)
+      '@angular/compiler-cli': 17.0.8(@angular/compiler@17.0.8)(typescript@5.2.2)
+      '@angular/core': 17.0.8(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/platform-browser-dynamic': 17.0.8(@angular/common@17.0.8)(@angular/compiler@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser@17.0.8)
+      jest: 29.7.0(@types/node@20.10.6)(ts-node@10.9.2)
+      jest-preset-angular: 13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.7)(jest@29.7.0)(typescript@5.2.2)
+      lodash: 4.17.21
+      tsconfig-paths: 4.2.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@jest/types'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - chokidar
+      - supports-color
+      - typescript
+      - utf-8-validate
     dev: true
 
   /@angular-devkit/architect@0.1700.8(chokidar@3.5.3):
@@ -6225,7 +6263,7 @@ packages:
       jest-resolve: 29.7.0
     dev: true
 
-  /jest-preset-angular@13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.2)(jest@29.7.0)(typescript@5.2.2):
+  /jest-preset-angular@13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.7)(jest@29.7.0)(typescript@5.2.2):
     resolution: {integrity: sha512-XKeWa8Qt7p37SzlJ85qEXgig06SgkfrzV057X2GSMqfz/HLJmTUjMFkHJKe65ZaQumNQWCcXpxXREr6EfZ9bow==}
     engines: {node: ^14.15.0 || >=16.10.0}
     peerDependencies:
@@ -6246,7 +6284,7 @@ packages:
       jest-environment-jsdom: 29.7.0
       jest-util: 29.7.0
       pretty-format: 29.7.0
-      ts-jest: 29.1.1(@babel/core@7.23.2)(esbuild@0.19.11)(jest@29.7.0)(typescript@5.2.2)
+      ts-jest: 29.1.1(@babel/core@7.23.7)(esbuild@0.19.11)(jest@29.7.0)(typescript@5.2.2)
       typescript: 5.2.2
     optionalDependencies:
       esbuild: 0.19.11
@@ -6910,6 +6948,10 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
       brace-expansion: 2.0.1
+    dev: true
+
+  /minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
     dev: true
 
   /minipass-collect@2.0.1:
@@ -8611,6 +8653,11 @@ packages:
       ansi-regex: 6.0.1
     dev: true
 
+  /strip-bom@3.0.0:
+    resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
+    engines: {node: '>=4'}
+    dev: true
+
   /strip-bom@4.0.0:
     resolution: {integrity: sha512-3xurFv5tEgii33Zi8Jtp55wEIILR9eh34FAW00PZf+JnSsTmV/ioewSgQl97JHvgjoRGwPShsWm+IdrxB35d0w==}
     engines: {node: '>=8'}
@@ -8792,7 +8839,7 @@ packages:
     hasBin: true
     dev: true
 
-  /ts-jest@29.1.1(@babel/core@7.23.2)(esbuild@0.19.11)(jest@29.7.0)(typescript@5.2.2):
+  /ts-jest@29.1.1(@babel/core@7.23.7)(esbuild@0.19.11)(jest@29.7.0)(typescript@5.2.2):
     resolution: {integrity: sha512-D6xjnnbP17cC85nliwGiL+tpoKN0StpgE0TeOjXQTU6MVCfsB4v7aW05CgQ/1OywGb0x/oy9hHFnN+sczTiRaA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -8813,7 +8860,7 @@ packages:
       esbuild:
         optional: true
     dependencies:
-      '@babel/core': 7.23.2
+      '@babel/core': 7.23.7
       bs-logger: 0.2.6
       esbuild: 0.19.11
       fast-json-stable-stringify: 2.1.0
@@ -8856,6 +8903,15 @@ packages:
       typescript: 5.2.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    dev: true
+
+  /tsconfig-paths@4.2.0:
+    resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
+    engines: {node: '>=6'}
+    dependencies:
+      json5: 2.2.3
+      minimist: 1.2.8
+      strip-bom: 3.0.0
     dev: true
 
   /tslib@2.6.2:

@@ -8,7 +8,7 @@ import { LOCATION_TOKEN } from "./tokens/location.token";
 
 describe('KindeAngularService', () => {
   let kindeClientMock: KindeClient;
-  let locationSpy: jasmine.SpyObj<Location>;
+  let locationSpy: Location;
   const createService = () => TestBed.inject(KindeAngularService);
 
   beforeEach(() => {
@@ -20,13 +20,13 @@ describe('KindeAngularService', () => {
       getToken: () => Promise.resolve('test'),
       login: () => Promise.resolve(new URL('https://kinde.com/v2/login')),
       logout: () => Promise.resolve(new URL('https://kinde.com/v2/logout')),
-      handleRedirectToApp: jasmine.createSpy('handleRedirectToApp').and.resolveTo()
+      handleRedirectToApp: jest.fn().mockResolvedValue(undefined)
     } as unknown as KindeClient;
 
-    locationSpy = jasmine.createSpyObj('LOCATION_TOKEN', {
-      href: jasmine.createSpy(),
-      search: jasmine.createSpy(),
-    });
+    locationSpy = {
+      href: jest.fn(),
+      search: jest.fn(),
+    } as unknown as Location;
 
     TestBed.configureTestingModule({
       providers: [
