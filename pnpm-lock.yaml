@@ -58,9 +58,6 @@ devDependencies:
   '@angular/compiler-cli':
     specifier: ^17.0.0
     version: 17.0.8(@angular/compiler@17.0.8)(typescript@5.2.2)
-  '@types/jasmine':
-    specifier: ~5.1.0
-    version: 5.1.4
   '@types/jest':
     specifier: ^29.5.11
     version: 29.5.11
@@ -3241,10 +3238,6 @@ packages:
     resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
-    dev: true
-
-  /@types/jasmine@5.1.4:
-    resolution: {integrity: sha512-px7OMFO/ncXxixDe1zR13V1iycqWae0MxTaw62RpFlksUi5QuNWgQJFkTQjIOvrmutJbI7Fp2Y2N1F6D2R4G6w==}
     dev: true
 
   /@types/jest@29.5.11:
