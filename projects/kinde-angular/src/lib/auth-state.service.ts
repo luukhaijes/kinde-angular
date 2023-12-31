@@ -38,9 +38,7 @@ export class AuthStateService {
 
   isLoading$ = this.isLoadingSubject$.asObservable();
   isAuthenticatedStream$ = this.isLoading$.pipe(
-    filter(isLoading => {
-      return !isLoading;
-    }),
+    filter(isLoading => !isLoading),
     distinctUntilChanged(),
     switchMap(() =>
       merge(
