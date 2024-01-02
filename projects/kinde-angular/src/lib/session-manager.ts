@@ -46,7 +46,9 @@ const sessionManager: BSessionManager = {
     for (const key in memCache) {
       delete memCache[key]
     }
-    CookieManager.deleteCookie(key, { path: '' });
+    for (const key of keysInCookie) {
+      CookieManager.deleteCookie(key, { path: '' });
+    }
   }
 }
 
