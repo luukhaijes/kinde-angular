@@ -44,3 +44,10 @@ Or
 ```typescript
   const authService = inject(KindeAngularService);
 ```
+
+## Roadmap
+
+- [ ] More unit tests
+- [ ] More documentation
+- [ ] Interceptor with pattern matching
+- [ ] Support analogjs
