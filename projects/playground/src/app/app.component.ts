@@ -24,6 +24,10 @@ export class AppComponent implements OnInit {
     this.authService.login();
   }
 
+  logout() {
+    this.authService.logout();
+  }
+
   getToken() {
     this.authService.getAccessToken().subscribe(token => console.log(token));
   }

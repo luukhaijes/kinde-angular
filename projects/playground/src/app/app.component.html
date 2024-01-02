@@ -3,4 +3,14 @@ token: {{ token | async | json }}
 
 
 <button (click)="login()">Login</button>
+<button (click)="logout()">logout</button>
 <button (click)="getToken()">Get token</button>
+
+<button [routerLink]="['lazy']">
+  Route to lazy canload
+</button>
+<button [routerLink]="['bla']">
+  Route to bla canActivate
+</button>
+
+<router-outlet></router-outlet>
