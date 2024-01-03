@@ -37,17 +37,20 @@ export class AppModule { }
 
 Add KindeService to your component via contructor or Inject method
 ```typescript
-  constructor(private authService: KindeAngularService){
-  }
+constructor(private authService: KindeAngularService) {}
 ```
 Or
 ```typescript
-  const authService = inject(KindeAngularService);
+const authService = inject(KindeAngularService);
 ```
 
 ## Roadmap
 
 - [ ] More unit tests
 - [ ] More documentation
-- [ ] Interceptor with pattern matching
+- [ ] Interceptor
+  - [ ] basic interceptor
+  - [ ] with pattern matching
 - [ ] Support analogjs
+- [ ] expose management api
+- [ ] feature flag guard
