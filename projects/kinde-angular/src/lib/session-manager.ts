@@ -1,13 +1,15 @@
 import { SessionManager } from "@kinde-oss/kinde-typescript-sdk";
 import { CookieManager } from "./cookie-manager";
 
+/**
+ * Typing seems a bit off here, created an issue: https://github.com/kinde-oss/kinde-typescript-sdk/issues/39
+ */
 interface BSessionManager extends SessionManager {
   getSessionItemBrowser(key: string): Promise<string | null>;
   setSessionItemBrowser(key: string, value: unknown): Promise<void>;
   removeSessionItemBrowser(key: string): Promise<void>;
 }
 
-const key =  'auth-state';
 const keysInCookie = ['refresh_token', 'access_token', 'acwpf-state-key']
 const memCache: Record<string, string> = {};
 const sessionManager: BSessionManager = {

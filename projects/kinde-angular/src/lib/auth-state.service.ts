@@ -69,11 +69,11 @@ export class AuthStateService {
   constructor(@Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient) {
   }
 
-  setIsLoading(isLoading: boolean) {
+  setIsLoading(isLoading: boolean): void {
     this.isLoadingSubject$.next(isLoading);
   }
 
-  setAccessToken(accessToken: string) {
+  setAccessToken(accessToken: string): void {
     this._accessToken$.next(accessToken);
   }
 }

@@ -33,21 +33,21 @@ export class KindeAngularService {
       ).subscribe();
   }
 
-  getAccessToken() {
+  getAccessToken(): Observable<string> {
     return from(this.kindeClient.getToken());
   }
 
-  async login() {
+  async login(): Promise<void> {
     const loginUrl = await this.kindeClient.login();
     this.location.href = loginUrl.href;
   }
 
-  async logout() {
+  async logout(): Promise<void> {
     const logoutUrl = await this.kindeClient.logout();
     this.location.href = logoutUrl.href;
   }
 
-  private shouldHandleCallback() {
+  private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.search)
       .pipe(
         map(search => new URLSearchParams(search)),
@@ -55,7 +55,7 @@ export class KindeAngularService {
       );
   }
 
-  async handleCallback() {
+  async handleCallback(): Promise<void> {
     try {
       await this.kindeClient.handleRedirectToApp(new URL(window.location.toString()));
       const token = await this.kindeClient.getToken();
