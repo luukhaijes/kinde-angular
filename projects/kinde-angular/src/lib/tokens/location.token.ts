@@ -1,3 +1,5 @@
 import { InjectionToken } from "@angular/core";
 
-export const LOCATION_TOKEN = new InjectionToken<Location>('[kinde angular] window location');
+type windowLocation = Location;
+
+export const LOCATION_TOKEN = new InjectionToken<windowLocation>('[kinde angular] window location');
