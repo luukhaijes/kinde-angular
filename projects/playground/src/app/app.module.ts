@@ -13,8 +13,8 @@ import { KindeAngularModule } from "../../../kinde-angular/src/lib/kinde-angular
     BrowserModule,
     AppRoutingModule,
     KindeAngularModule.forRoot({
-      clientId: '253580a772ff49feb36800993d1c7054',
-      authDomain: 'https://surther.kinde.com',
+      clientId: 'client_id_here',
+      authDomain: 'https://domain.kinde.com',
       redirectURL: 'http://localhost:4200/',
       logoutRedirectURL: 'http://localhost:4200/',
     })
