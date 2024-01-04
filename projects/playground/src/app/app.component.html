@@ -1,22 +1,39 @@
 {{ isAuth | async }}
 token: {{ token | async | json }}
 
+<ul>
+  <li>
+    <button (click)="login()">Login</button>
+  </li>
+  <li>
+    <button (click)="logout()">logout</button>
+  </li>
+  <li>
+    <button (click)="getToken()">Get token</button>
+  </li>
+</ul>
 
-<button (click)="login()">Login</button>
-<button (click)="logout()">logout</button>
-<button (click)="getToken()">Get token</button>
-
-<button [routerLink]="['lazy']">
-  Route to lazy canload
-</button>
-<button [routerLink]="['bla']">
-  Route to bla canActivate
-</button>
-<button [routerLink]="['feature']">
-  Route to feature featureFlagGuard
-</button>
-<button [routerLink]="['unknown-feature']">
-  Route to unknown feature featureFlagGuard
-</button>
+<ul>
+  <li>
+    <button [routerLink]="['lazy']">
+      Route to lazy canload
+    </button>
+  </li>
+  <li>
+    <button [routerLink]="['bla']">
+      Route to bla canActivate
+    </button>
+  </li>
+  <li>
+    <button [routerLink]="['feature']">
+      Route to feature featureFlagGuard
+    </button>
+  </li>
+  <li>
+    <button [routerLink]="['unknown-feature']">
+      Route to unknown feature featureFlagGuard
+    </button>
+  </li>
+</ul>
 
 <router-outlet></router-outlet>
