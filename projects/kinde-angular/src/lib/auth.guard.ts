@@ -1,7 +1,7 @@
-import { inject, Injectable } from "@angular/core";
+import { inject } from "@angular/core";
 import { KindeAngularService } from "./kinde-angular.service";
 import { take, tap } from "rxjs";
-import { CanActivateFn, CanMatchFn } from "@angular/router";
+import { CanActivateFn, CanMatchFn, Router, UrlTree } from "@angular/router";
 
 export const canMatchAuthGuard: CanMatchFn = () => {
   const authService = inject(KindeAngularService);
@@ -19,3 +19,13 @@ export const canActivateAuthGuard: CanActivateFn = () => {
     })
   );
 }
+
+export const featureFlagGuard = (flagName: string, redirect?: string): CanActivateFn => {
+  return async (): Promise<boolean | UrlTree> => {
+    const authService = inject(KindeAngularService);
+    const router = inject(Router);
+    const isEnabled = await authService.getFeatureFlagEnabled(flagName);
+
+    return isEnabled || router.createUrlTree([redirect || '/']);
+  }
+};
