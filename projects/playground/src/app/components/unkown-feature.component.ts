@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'feature',
+  selector: 'unknown-feature',
   template: `Does not have that feature`
 })
 
