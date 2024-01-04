@@ -125,11 +125,11 @@ describe('KindeAngularService', () => {
     expect(kindeClientMock.getFlag).toHaveBeenCalledWith('test', undefined, undefined);
   });
 
-  it('should get feature flag correctly', async () => {
+  it('should get getFeatureFlagEnabled flag correctly', async () => {
     kindeClientMock.getFlag.mockResolvedValue({ value: true });
     const service = createService();
     const result = await service.getFeatureFlagEnabled('test');
-    expect(kindeClientMock.getFlag).toHaveBeenCalledWith('test', undefined, undefined);
+    expect(kindeClientMock.getFlag).toHaveBeenCalledWith('test', undefined, 'b');
     expect(result).toBe(true);
   });
 });
