@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `Does not have that feature`
 })
 
-export class FeatureComponent implements OnInit {
+export class UnknownFeatureComponent implements OnInit {
   constructor() {
   }
 
