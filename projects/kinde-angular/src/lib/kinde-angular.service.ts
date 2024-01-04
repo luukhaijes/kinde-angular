@@ -3,7 +3,7 @@ import { defer, from, iif, map, Observable, of, switchMap, tap } from "rxjs";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
-import { UserType } from "@kinde-oss/kinde-typescript-sdk";
+import { FlagType, GetFlagType, UserType } from "@kinde-oss/kinde-typescript-sdk";
 import { LOCATION_TOKEN } from "./tokens/location.token";
 
 @Injectable({
@@ -35,6 +35,15 @@ export class KindeAngularService {
 
   getAccessToken(): Observable<string> {
     return from(this.kindeClient.getToken());
+  }
+
+  getFeatureFlag(code: string, defaultValue?: string | number | boolean | undefined, flagType?: keyof FlagType): Promise<GetFlagType> {
+    return this.kindeClient.getFlag(code, defaultValue, flagType);
+  }
+
+  async getFeatureFlagEnabled(code: string, defaultValue?: boolean | undefined): Promise<boolean> {
+    const BOOLEAN_FLAG_TYPE = 'b';
+    return (await this.getFeatureFlag(code, defaultValue, BOOLEAN_FLAG_TYPE)).value as boolean;
   }
 
   async login(): Promise<void> {
