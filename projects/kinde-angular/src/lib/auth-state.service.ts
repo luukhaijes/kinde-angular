@@ -25,7 +25,15 @@ interface TokenStreamState {
   providedIn: 'root'
 })
 export class AuthStateService {
+  /**
+   * A variant of Subject that requires an initial value and emits its current value whenever it is subscribed to.
+   * We use BehaviorSubject because we want the initial value to be true
+   */
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
+  /**
+   * A variant of Subject that "replays" old values to new subscribers by emitting them when they first subscribe.
+   * We buffer the last emitted value and emit it to new subscribers if subscribed.
+   */
   private _accessToken$ = new ReplaySubject<string>(1);
 
   private accessTokenStream$ = this._accessToken$.pipe(

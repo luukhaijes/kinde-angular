@@ -13,15 +13,12 @@ interface BSessionManager extends SessionManager {
 const keysInCookie = ['refresh_token', 'access_token', 'acwpf-state-key']
 const memCache: Record<string, string> = {};
 const sessionManager: BSessionManager = {
-  // @ts-ignore
   async getSessionItemBrowser(key: string) {
     return CookieManager.getCookie(key) || memCache[key];
   },
-  // @ts-ignore
   async getSessionItem(key: string) {
     return this.getSessionItemBrowser(key);
   },
-  // @ts-ignore
   async setSessionItemBrowser(key: string, value: unknown) {
     const inCookieList = keysInCookie.find(k => key.includes(k))
 
@@ -34,7 +31,6 @@ const sessionManager: BSessionManager = {
   async setSessionItem(key: string, value: unknown) {
     await this.setSessionItemBrowser(key, value);
   },
-  // @ts-ignore
   async removeSessionItemBrowser(key: string) {
     for (const key in memCache) {
       delete memCache[key]
