@@ -12,5 +12,11 @@ token: {{ token | async | json }}
 <button [routerLink]="['bla']">
   Route to bla canActivate
 </button>
+<button [routerLink]="['feature']">
+  Route to feature featureFlagGuard
+</button>
+<button [routerLink]="['unknown-feature']">
+  Route to unknown feature featureFlagGuard
+</button>
 
 <router-outlet></router-outlet>
