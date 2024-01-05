@@ -33,8 +33,8 @@ export class KindeAngularService {
       ).subscribe();
   }
 
-  getAccessToken(): Observable<string> {
-    return from(this.kindeClient.getToken());
+  getAccessToken(): Promise<string> {
+    return this.kindeClient.getToken();
   }
 
   getFeatureFlag(code: string, defaultValue?: string | number | boolean | undefined, flagType?: keyof FlagType): Promise<GetFlagType> {
