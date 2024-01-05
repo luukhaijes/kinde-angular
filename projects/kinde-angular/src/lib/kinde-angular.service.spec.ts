@@ -71,7 +71,7 @@ describe('KindeAngularService', () => {
 
   it('should get access token correctly', (done) => {
     const service = createService();
-    service.getAccessToken().subscribe(accessToken => {
+    service.getAccessToken().then(accessToken => {
       expect(accessToken).toBe('test');
       done();
     });
