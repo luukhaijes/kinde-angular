@@ -11,11 +11,13 @@ npm i kinde-angular
 ```
 
 import module to your app module
+
 ```typescript
 import { KindeAngularModule } from 'kinde-angular';
 ```
 
 Add KindeModule to your imports
+
 ```typescript
 @NgModule({
   declarations: [
@@ -32,17 +34,45 @@ Add KindeModule to your imports
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
 ```
 
 Add KindeService to your component via contructor or Inject method
+
 ```typescript
 constructor(private authService: KindeAngularService) {}
 ```
+
 Or
+
 ```typescript
 const authService = inject(KindeAngularService);
 ```
+
+### Protect routes
+
+Use feature guard
+
+```typescript
+[{
+  path: 'feature',
+  component: FeatureComponent,
+  canActivate: [featureFlagGuard('has_feature')]
+}]
+```
+
+Use canActivate auth guard
+
+```typescript
+[{
+  path: 'route',
+  component: AComponent,
+  canActivate: [canActivateAuthGuard]
+}]
+```
+
+You can also read some more information [here](docs.md)
 
 ## Roadmap
 
@@ -52,5 +82,6 @@ const authService = inject(KindeAngularService);
   - [ ] basic interceptor
   - [ ] with pattern matching
 - [ ] Support analogjs
-- [ ] expose management api
-- [ ] feature flag guard
+- [x] feature flag guard
+- [ ] feature flag directive
+- [ ] ng schematic
