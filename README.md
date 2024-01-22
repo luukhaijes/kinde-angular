@@ -1,8 +1,9 @@
-# ⚠️ This package is still in development and may not ready for production use
-
 # KindeAngular
 
 Kinde integration for Angular
+
+This package is in **beta**, for issues and feature requests please use [GitHub Issues](https://github.com/luukhaijes/kinde-angular/issues)
+
 
 ## Quick setup
 
