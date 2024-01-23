@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   }
 
   getToken() {
-    this.authService.getAccessToken().subscribe(token => console.log(token));
+    this.authService.accessToken$.subscribe(token => console.log(token));
   }
 
   handleCallback() {
