@@ -56,6 +56,11 @@ export class KindeAngularService {
     this.location.href = logoutUrl.href;
   }
 
+  async register(): Promise<void> {
+    const registerUrl = await this.kindeClient.register();
+    this.location.href = registerUrl.href;
+  }
+
   private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.search)
       .pipe(

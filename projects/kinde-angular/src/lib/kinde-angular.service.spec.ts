@@ -13,6 +13,7 @@ describe('KindeAngularService', () => {
     getToken: () => Promise.resolve('test'),
     login: () => Promise.resolve(new URL('https://kinde.com/v2/login')),
     logout: () => Promise.resolve(new URL('https://kinde.com/v2/logout')),
+    register: () => Promise.resolve(new URL('https://kinde.com/v2/register')),
     handleRedirectToApp: jest.fn().mockResolvedValue(undefined),
     getFlag: jest.fn(),
   };
@@ -77,16 +78,22 @@ describe('KindeAngularService', () => {
     });
   });
 
-  it('should login correctly', async () => {
+  it('should return login url correctly', async () => {
     const service = createService();
     await service.login();
     expect(locationSpy.href).toBe('https://kinde.com/v2/login');
   });
 
-  it('should logout correctly', async () => {
+  it('should return logout url correctly', async () => {
     const service = createService();
     await service.logout();
     expect(locationSpy.href).toBe('https://kinde.com/v2/logout');
+  });
+
+  it('should return register url correctly', async () => {
+    const service = createService();
+    await service.register();
+    expect(locationSpy.href).toBe('https://kinde.com/v2/register');
   });
 
   it('shouldHandleCallback returns if params exist', (done) => {
