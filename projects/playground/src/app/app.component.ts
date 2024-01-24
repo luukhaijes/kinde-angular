@@ -7,32 +7,9 @@ import { of } from "rxjs";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  title = 'playground';
-  isAuth = this.authService.isAuthenticated$;
-  token = this.authService.accessToken$;
+export class AppComponent {
+  isAuthenticated$ = this.authService.isAuthenticated$;
+  isLoading$ = this.authService.isLoading$;
   constructor(private authService: KindeAngularService){
-  }
-
-  ngOnInit() {
-    if (window.location.search) {
-      this.handleCallback();
-    }
-  }
-
-  login() {
-    this.authService.login();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  getToken() {
-    this.authService.accessToken$.subscribe(token => console.log(token));
-  }
-
-  handleCallback() {
-    // this.authService.handleCallback();
   }
 }

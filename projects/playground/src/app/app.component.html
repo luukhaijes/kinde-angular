@@ -1,39 +1,11 @@
-{{ isAuth | async }}
-token: {{ token | async | json }}
-
-<ul>
-  <li>
-    <button (click)="login()">Login</button>
-  </li>
-  <li>
-    <button (click)="logout()">logout</button>
-  </li>
-  <li>
-    <button (click)="getToken()">Get token</button>
-  </li>
-</ul>
-
-<ul>
-  <li>
-    <button [routerLink]="['lazy']">
-      Route to lazy canload
-    </button>
-  </li>
-  <li>
-    <button [routerLink]="['bla']">
-      Route to bla canActivate
-    </button>
-  </li>
-  <li>
-    <button [routerLink]="['feature']">
-      Route to feature featureFlagGuard
-    </button>
-  </li>
-  <li>
-    <button [routerLink]="['unknown-feature']">
-      Route to unknown feature featureFlagGuard
-    </button>
-  </li>
-</ul>
-
-<router-outlet></router-outlet>
+<ng-container *ngIf="isLoading$ | async; else elseTmpl">
+  Loading...
+</ng-container>
+<ng-template #elseTmpl>
+  <ng-container *ngIf="isAuthenticated$ | async; else loggedOut">
+    <app-logged-in />
+  </ng-container>
+  <ng-template #loggedOut>
+    <app-logged-out />
+  </ng-template>
+</ng-template>
