@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
-import { defer, from, iif, map, Observable, of, switchMap, tap } from "rxjs";
+import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { defer, iif, map, mergeMap, Observable, of, Subject, switchMap, takeUntil, tap } from "rxjs";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
@@ -9,7 +9,9 @@ import { LOCATION_TOKEN } from "./tokens/location.token";
 @Injectable({
   providedIn: 'root'
 })
-export class KindeAngularService {
+export class KindeAngularService implements OnDestroy {
+  private unsubscribe$ = new Subject<void>();
+
   user$: Observable<UserType | null> = this.authState.user$;
   isAuthenticated$: Observable<boolean> = this.authState.isAuthenticated$;
   isLoading$: Observable<boolean> = this.authState.isLoading$;
@@ -29,8 +31,27 @@ export class KindeAngularService {
             of(false)
           ),
         ),
-        tap(() => authState.setIsLoading(false)),
+        mergeMap(() => this.getUser()),
+        tap((user: UserType) => {
+          authState.setUser(user);
+          authState.setIsLoading(false)
+        }),
+        takeUntil(this.unsubscribe$)
       ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  private async getUser(): Promise<UserType> {
+    let user = await this.kindeClient.getUser();
+
+    if (!user) {
+      user = await this.kindeClient.getUserProfile();
+    }
+    return user;
   }
 
   getAccessToken(): Promise<string> {
@@ -74,6 +95,10 @@ export class KindeAngularService {
       await this.kindeClient.handleRedirectToApp(new URL(window.location.toString()));
       const token = await this.kindeClient.getToken();
       this.authState.setAccessToken(token);
+      const url = new URL(window.location.toString());
+      url.search = '';
+
+      window.history.pushState({}, '', url);
     } catch (e) {
       console.log(e);
     }

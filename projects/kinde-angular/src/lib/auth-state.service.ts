@@ -15,6 +15,7 @@ import {
 } from "rxjs";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
+import { UserType } from "@kinde-oss/kinde-typescript-sdk";
 
 interface TokenStreamState {
   prev: string | null;
@@ -35,6 +36,8 @@ export class AuthStateService {
    * We buffer the last emitted value and emit it to new subscribers if subscribed.
    */
   private _accessToken$ = new ReplaySubject<string>(1);
+
+  private _user$ = new ReplaySubject<UserType>(1);
 
   private accessTokenStream$ = this._accessToken$.pipe(
     scan((acc: TokenStreamState, token: string) => ({
@@ -83,5 +86,9 @@ export class AuthStateService {
 
   setAccessToken(accessToken: string): void {
     this._accessToken$.next(accessToken);
+  }
+
+  setUser(user: UserType): void {
+    this._user$.next(user);
   }
 }

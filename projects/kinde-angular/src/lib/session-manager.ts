@@ -20,7 +20,7 @@ const sessionManager: BSessionManager = {
     return this.getSessionItemBrowser(key);
   },
   async setSessionItemBrowser(key: string, value: unknown) {
-    const inCookieList = keysInCookie.find(k => key.includes(k))
+    const inCookieList = keysInCookie.find(k => key.includes(k));
 
     if (inCookieList) {
       CookieManager.setCookie(key, value as string);
