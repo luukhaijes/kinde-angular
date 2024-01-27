@@ -67,7 +67,7 @@ export class KindeAngularService implements OnDestroy {
     return (await this.getFeatureFlag(code, defaultValue, BOOLEAN_FLAG_TYPE)).value as boolean;
   }
 
-  async login(options: RegisterURLOptions): Promise<void> {
+  async login(options?: RegisterURLOptions): Promise<void> {
     const loginUrl = await this.kindeClient.login(options);
     this.location.href = loginUrl.href;
   }
@@ -77,7 +77,7 @@ export class KindeAngularService implements OnDestroy {
     this.location.href = logoutUrl.href;
   }
 
-  async register(options: RegisterURLOptions): Promise<void> {
+  async register(options?: RegisterURLOptions): Promise<void> {
     const registerUrl = await this.kindeClient.register(options);
     this.location.href = registerUrl.href;
   }
