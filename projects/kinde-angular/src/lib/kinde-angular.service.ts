@@ -3,7 +3,7 @@ import { defer, iif, map, mergeMap, Observable, of, Subject, switchMap, takeUnti
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
-import { FlagType, GetFlagType, UserType } from "@kinde-oss/kinde-typescript-sdk";
+import { FlagType, GetFlagType, RegisterURLOptions, UserType } from "@kinde-oss/kinde-typescript-sdk";
 import { LOCATION_TOKEN } from "./tokens/location.token";
 
 @Injectable({
@@ -67,8 +67,8 @@ export class KindeAngularService implements OnDestroy {
     return (await this.getFeatureFlag(code, defaultValue, BOOLEAN_FLAG_TYPE)).value as boolean;
   }
 
-  async login(): Promise<void> {
-    const loginUrl = await this.kindeClient.login();
+  async login(options: RegisterURLOptions): Promise<void> {
+    const loginUrl = await this.kindeClient.login(options);
     this.location.href = loginUrl.href;
   }
 
@@ -77,8 +77,8 @@ export class KindeAngularService implements OnDestroy {
     this.location.href = logoutUrl.href;
   }
 
-  async register(): Promise<void> {
-    const registerUrl = await this.kindeClient.register();
+  async register(options: RegisterURLOptions): Promise<void> {
+    const registerUrl = await this.kindeClient.register(options);
     this.location.href = registerUrl.href;
   }
 
