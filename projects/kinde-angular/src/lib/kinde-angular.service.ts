@@ -17,7 +17,8 @@ export class KindeAngularService implements OnDestroy {
   isLoading$: Observable<boolean> = this.authState.isLoading$;
   accessToken$: Observable<string | null> = this.authState.accessToken$;
 
-  // getClaims = this.kindeClient.getClaim;
+  getClaims = this.kindeClient.getClaim;
+  getUserOrganizations = this.kindeClient.getUserOrganizations;
 
   constructor(
     @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
@@ -102,8 +103,6 @@ export class KindeAngularService implements OnDestroy {
       this.authState.setAccessToken(token);
       const url = new URL(window.location.toString());
       url.search = '';
-
-
 
       window.history.pushState({}, '', url);
     } catch (e) {
