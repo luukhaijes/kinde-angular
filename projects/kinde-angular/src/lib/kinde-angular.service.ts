@@ -1,10 +1,24 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { defer, iif, map, mergeMap, Observable, of, Subject, switchMap, takeUntil, tap, withLatestFrom } from "rxjs";
+import {
+  defer,
+  from,
+  iif,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom
+} from "rxjs";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
-import { FlagType, GetFlagType, RegisterURLOptions, UserType } from "@kinde-oss/kinde-typescript-sdk";
+import { ClaimTokenType, FlagType, GetFlagType, RegisterURLOptions, UserType } from "@kinde-oss/kinde-typescript-sdk";
 import { LOCATION_TOKEN } from "./tokens/location.token";
+import { IClaim } from "./interfaces/claim.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +30,6 @@ export class KindeAngularService implements OnDestroy {
   isAuthenticated$: Observable<boolean> = this.authState.isAuthenticated$;
   isLoading$: Observable<boolean> = this.authState.isLoading$;
   accessToken$: Observable<string | null> = this.authState.accessToken$;
-
-  getClaims = this.kindeClient.getClaim;
-  getUserOrganizations = this.kindeClient.getUserOrganizations;
 
   constructor(
     @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
@@ -34,8 +45,12 @@ export class KindeAngularService implements OnDestroy {
             of(false)
           ),
         ),
-        mergeMap((handled) => handled ? this.getUser() : of(null)),
+        mergeMap((handled) => {
+          console.log(handled);
+          return this.getUser();
+        }),
         tap((user: UserType | null) => {
+          console.log(user);
           if (user) {
             authState.setUser(user);
           }
@@ -51,13 +66,23 @@ export class KindeAngularService implements OnDestroy {
   }
 
   private async getUser(): Promise<UserType> {
-    let user = await this.kindeClient.getUser();
-    let token = await this.kindeClient.getToken();
+    try {
+      let user = await this.kindeClient.getUser();
 
-    if (!user) {
-      user = await this.kindeClient.getUserProfile();
+      if (!user) {
+        user = await this.kindeClient.getUserProfile();
+      }
+      return user;
+    } finally {
     }
-    return user;
+  }
+
+  getClaim<T>(claim: string, type?: ClaimTokenType): Observable<IClaim<T>> {
+    return from(this.kindeClient.getClaim(claim, type)) as Observable<IClaim<T>>;
+  };
+
+  getUserOrganizations(): Observable<{ orgCodes: string[] }> {
+    return from(this.kindeClient.getUserOrganizations());
   }
 
   getAccessToken(): Promise<string> {
@@ -105,8 +130,11 @@ export class KindeAngularService implements OnDestroy {
       url.search = '';
 
       window.history.pushState({}, '', url);
+      console.log('callback handled');
+      // return true;
     } catch (e) {
       console.log(e);
+      // return false;
     }
   }
 }
