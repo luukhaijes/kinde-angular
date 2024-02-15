@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { defer, iif, map, mergeMap, Observable, of, Subject, switchMap, takeUntil, tap } from "rxjs";
+import { defer, iif, map, mergeMap, Observable, of, Subject, switchMap, takeUntil, tap, withLatestFrom } from "rxjs";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
@@ -17,6 +17,8 @@ export class KindeAngularService implements OnDestroy {
   isLoading$: Observable<boolean> = this.authState.isLoading$;
   accessToken$: Observable<string | null> = this.authState.accessToken$;
 
+  // getClaims = this.kindeClient.getClaim;
+
   constructor(
     @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
     @Inject(LOCATION_TOKEN) private location: Location,
@@ -31,9 +33,11 @@ export class KindeAngularService implements OnDestroy {
             of(false)
           ),
         ),
-        mergeMap(() => this.getUser()),
-        tap((user: UserType) => {
-          authState.setUser(user);
+        mergeMap((handled) => handled ? this.getUser() : of(null)),
+        tap((user: UserType | null) => {
+          if (user) {
+            authState.setUser(user);
+          }
           authState.setIsLoading(false)
         }),
         takeUntil(this.unsubscribe$)
@@ -47,6 +51,7 @@ export class KindeAngularService implements OnDestroy {
 
   private async getUser(): Promise<UserType> {
     let user = await this.kindeClient.getUser();
+    let token = await this.kindeClient.getToken();
 
     if (!user) {
       user = await this.kindeClient.getUserProfile();
@@ -97,6 +102,8 @@ export class KindeAngularService implements OnDestroy {
       this.authState.setAccessToken(token);
       const url = new URL(window.location.toString());
       url.search = '';
+
+
 
       window.history.pushState({}, '', url);
     } catch (e) {
