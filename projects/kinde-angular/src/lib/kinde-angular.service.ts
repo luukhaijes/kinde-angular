@@ -46,11 +46,9 @@ export class KindeAngularService implements OnDestroy {
           ),
         ),
         mergeMap((handled) => {
-          console.log(handled);
           return this.getUser();
         }),
         tap((user: UserType | null) => {
-          console.log(user);
           if (user) {
             authState.setUser(user);
           }
