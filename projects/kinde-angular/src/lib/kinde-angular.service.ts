@@ -45,15 +45,9 @@ export class KindeAngularService implements OnDestroy {
             of(false)
           ),
         ),
-        mergeMap((handled) => {
-          return this.getUser();
-        }),
-        tap((user: UserType | null) => {
-          if (user) {
-            authState.setUser(user);
-          }
+        tap(() =>
           authState.setIsLoading(false)
-        }),
+        ),
         takeUntil(this.unsubscribe$)
       ).subscribe();
   }
@@ -61,18 +55,6 @@ export class KindeAngularService implements OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  private async getUser(): Promise<UserType> {
-    try {
-      let user = await this.kindeClient.getUser();
-
-      if (!user) {
-        user = await this.kindeClient.getUserProfile();
-      }
-      return user;
-    } finally {
-    }
   }
 
   getClaim<T>(claim: string, type?: ClaimTokenType): Observable<IClaim<T>> {

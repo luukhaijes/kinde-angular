@@ -17,4 +17,8 @@ export class LoggedInComponent {
   getToken() {
     this.authService.getAccessToken().then(t => console.log(t));
   }
+
+  getUserOrganizations() {
+    this.authService.getUserOrganizations().subscribe(orgs => console.log(orgs));
+  };
 }

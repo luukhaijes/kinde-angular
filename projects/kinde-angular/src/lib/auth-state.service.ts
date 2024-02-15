@@ -11,7 +11,8 @@ import {
   of,
   scan,
   merge,
-  mergeMap
+  mergeMap,
+  combineLatestWith
 } from "rxjs";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
@@ -66,9 +67,21 @@ export class AuthStateService {
     shareReplay(1)
   );
 
-  user$ = this.isAuthenticatedStream$.pipe(
-    concatMap(isAuthenticated =>
+  private _userCache$ = this.isAuthenticatedStream$.pipe(
+    switchMap(isAuthenticated =>
       isAuthenticated ? this.kindeClient.getUser() : of(null)
+    ),
+    shareReplay(1)
+  );
+
+  user$ = this.isAuthenticatedStream$.pipe(
+    combineLatestWith(this._userCache$),
+    concatMap(([isAuthenticated, cachedUser]) => {
+        if (cachedUser) {
+          return of(cachedUser)
+        }
+        return isAuthenticated ? this.kindeClient.getUserProfile() : of(null)
+      }
     ),
   );
 
@@ -77,6 +90,7 @@ export class AuthStateService {
       isAuthenticated ? this.kindeClient.getToken() : of(null)
     ),
   )
+
   constructor(@Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient) {
   }
 
