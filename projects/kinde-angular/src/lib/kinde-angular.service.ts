@@ -68,7 +68,7 @@ export class KindeAngularService implements OnDestroy {
   };
 
   getUserOrganizations(): Observable<{ orgCodes: string[] }> {
-    // todo: check L61
+    // todo: check L59
     return this.isAuthenticated$.pipe(
       switchMap(isAuthenticated =>
         iif(
@@ -124,11 +124,8 @@ export class KindeAngularService implements OnDestroy {
       url.search = '';
 
       window.history.pushState({}, '', url);
-      console.log('callback handled');
-      // return true;
     } catch (e) {
       console.log(e);
-      // return false;
     }
   }
 }
