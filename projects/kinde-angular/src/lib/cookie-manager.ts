@@ -5,8 +5,13 @@ export class CookieManager {
     return Cookies.get(name);
   }
 
-  static setCookie(name: string, value: string): void {
-    Cookies.set(name, value, { path: '' });
+  static setCookie(name: string, value: string, options = {}): void {
+    Cookies.set(name, value, {
+      path: '',
+      secure: true,
+      sameSite: 'lax',
+      ...options
+    });
   }
 
   static deleteCookie(name: string, options: Cookies.CookieAttributes): void {
