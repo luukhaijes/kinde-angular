@@ -7,7 +7,7 @@ import { LOCATION_TOKEN } from "./tokens/location.token";
 
 @NgModule()
 export class KindeAngularModule {
-  static forRoot(config: KindeConfigInterface): ModuleWithProviders<KindeAngularModule> {
+  static forRoot(config?: KindeConfigInterface): ModuleWithProviders<KindeAngularModule> {
     return {
       ngModule: KindeAngularModule,
       providers: [

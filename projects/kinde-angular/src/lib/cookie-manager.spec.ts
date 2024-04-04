@@ -28,7 +28,7 @@ describe('CookieManager', () => {
 
   it('should set a cookie', () => {
     CookieManager.setCookie('newCookie', 'newValue');
-    expect(Cookies.set).toHaveBeenCalledWith('newCookie', 'newValue', { path: '' });
+    expect(Cookies.set).toHaveBeenCalledWith('newCookie', 'newValue', { path: '', sameSite: 'lax', secure: true });
   });
 
   it('should delete a cookie', () => {

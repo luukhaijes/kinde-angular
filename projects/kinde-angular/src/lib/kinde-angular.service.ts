@@ -4,14 +4,12 @@ import {
   from,
   iif,
   map,
-  mergeMap,
   Observable,
   of,
   Subject,
   switchMap,
   takeUntil,
-  tap,
-  withLatestFrom
+  tap
 } from "rxjs";
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
@@ -57,12 +55,28 @@ export class KindeAngularService implements OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  getClaim<T>(claim: string, type?: ClaimTokenType): Observable<IClaim<T>> {
-    return from(this.kindeClient.getClaim(claim, type)) as Observable<IClaim<T>>;
+  getClaim<T>(claim: string, type?: ClaimTokenType): Observable<IClaim<T> | null> {
+    // todo: make reusable function to handle isAuthenticated
+    return this.isAuthenticated$.pipe(
+      switchMap(isAuthenticated =>
+        iif(
+          () => isAuthenticated,
+          from(this.kindeClient.getClaim(claim, type))  as Observable<IClaim<T>>,
+          of(null)
+        )
+    ));
   };
 
   getUserOrganizations(): Observable<{ orgCodes: string[] }> {
-    return from(this.kindeClient.getUserOrganizations());
+    // todo: check L59
+    return this.isAuthenticated$.pipe(
+      switchMap(isAuthenticated =>
+        iif(
+          () => isAuthenticated,
+          from(this.kindeClient.getUserOrganizations()),
+          of({ orgCodes: [] })
+        )
+    ));
   }
 
   getAccessToken(): Promise<string> {
@@ -110,11 +124,8 @@ export class KindeAngularService implements OnDestroy {
       url.search = '';
 
       window.history.pushState({}, '', url);
-      console.log('callback handled');
-      // return true;
     } catch (e) {
       console.log(e);
-      // return false;
     }
   }
 }
