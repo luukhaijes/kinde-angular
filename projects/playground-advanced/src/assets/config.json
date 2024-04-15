@@ -1,0 +1,8 @@
+{
+  "kinde": {
+    "clientId": "0769d21885f4435eaff720dd5ea77253",
+    "authDomain": "https://surther.kinde.com",
+    "redirectURL": "http://localhost:4200",
+    "logoutRedirectURL": "http://localhost:4200"
+  }
+}
