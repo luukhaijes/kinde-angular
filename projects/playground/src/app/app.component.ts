@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { KindeAngularService } from "../../../kinde-angular/src/lib/kinde-angular.service";
-import { of } from "rxjs";
 
 @Component({
   selector: 'app-root',
