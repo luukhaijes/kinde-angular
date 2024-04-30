@@ -1,0 +1,8 @@
+{
+  "kinde": {
+    "clientId": "client_id",
+    "authDomain": "auth_domain",
+    "redirectURL": "http://localhost:4200",
+    "logoutRedirectURL": "http://localhost:4200"
+  }
+}
