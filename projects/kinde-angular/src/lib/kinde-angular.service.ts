@@ -96,7 +96,7 @@ export class KindeAngularService implements OnDestroy {
   async login(options?: RegisterURLOptions): Promise<void> {
     const loginUrl = await this.kindeClient.login(options);
     if (options?.post_login_redirect_url) {
-      await sessionManager.setSessionItemBrowser('post_login_redirect_url', options?.post_login_redirect_url);
+      await sessionManager.setSessionItemBrowser('post_login_redirect_url', options.post_login_redirect_url);
     }
     this.location.href = loginUrl.href;
   }
