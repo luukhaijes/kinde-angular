@@ -21,7 +21,6 @@ const sessionManager: BSessionManager = {
   },
   async setSessionItemBrowser(key: string, value: unknown) {
     const inCookieList = keysInCookie.find(k => key.includes(k));
-    console.log(key, value);
 
     if (inCookieList) {
       CookieManager.setCookie(key, value as string);
