@@ -5,6 +5,14 @@ import { AuthStateService } from './auth-state.service';
 import { UserType } from '@kinde-oss/kinde-typescript-sdk';
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { LOCATION_TOKEN } from "./tokens/location.token";
+import { sessionManager } from "./session-manager";
+
+jest.mock('./session-manager', () => ({
+  sessionManager: {
+    getSessionItemBrowser: jest.fn(),
+    removeSessionItemBrowser: jest.fn()
+  }
+}))
 
 describe('KindeAngularService', () => {
   let kindeClientMock = {
@@ -138,5 +146,21 @@ describe('KindeAngularService', () => {
     const result = await service.getFeatureFlagEnabled('test');
     expect(kindeClientMock.getFlag).toHaveBeenCalledWith('test', undefined, 'b');
     expect(result).toBe(true);
+  });
+
+  it('should use the post_logout_redirect_url if available', async () => {
+    window.history.pushState = jest.fn();
+    const url = 'https://kinde.com/dashboard';
+
+    (sessionManager.getSessionItemBrowser as any).mockReturnValue(url);
+    const service = createService();
+    await service.handleCallback();
+    expect(sessionManager.getSessionItemBrowser).toHaveBeenCalled()
+    expect(sessionManager.getSessionItemBrowser).toHaveBeenCalledWith('post_login_redirect_url');
+
+    expect(sessionManager.removeSessionItemBrowser).toHaveBeenCalled()
+    expect(sessionManager.removeSessionItemBrowser).toHaveBeenCalledWith('post_login_redirect_url');
+
+    expect(window.history.pushState).toHaveBeenCalledWith({}, "", url);
   });
 });

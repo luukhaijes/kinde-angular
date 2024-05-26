@@ -10,7 +10,7 @@ interface BSessionManager extends SessionManager {
   removeSessionItemBrowser(key: string): Promise<void>;
 }
 
-const keysInCookie = ['refresh_token', 'access_token', 'acwpf-state-key', 'ac-state-key', 'id_token']
+const keysInCookie = ['refresh_token', 'access_token', 'acwpf-state-key', 'ac-state-key', 'id_token', 'user', 'post_login_redirect_url']
 const memCache: Record<string, string> = {};
 const sessionManager: BSessionManager = {
   async getSessionItemBrowser(key: string) {

@@ -17,6 +17,7 @@ import { AuthStateService } from "./auth-state.service";
 import { ClaimTokenType, FlagType, GetFlagType, RegisterURLOptions, UserType } from "@kinde-oss/kinde-typescript-sdk";
 import { LOCATION_TOKEN } from "./tokens/location.token";
 import { IClaim } from "./interfaces/claim.interface";
+import { sessionManager } from "./session-manager";
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +95,9 @@ export class KindeAngularService implements OnDestroy {
 
   async login(options?: RegisterURLOptions): Promise<void> {
     const loginUrl = await this.kindeClient.login(options);
+    if (options?.post_login_redirect_url) {
+      await sessionManager.setSessionItemBrowser('post_login_redirect_url', options.post_login_redirect_url);
+    }
     this.location.href = loginUrl.href;
   }
 
@@ -120,10 +124,16 @@ export class KindeAngularService implements OnDestroy {
       await this.kindeClient.handleRedirectToApp(new URL(window.location.toString()));
       const token = await this.kindeClient.getToken();
       this.authState.setAccessToken(token);
-      const url = new URL(window.location.toString());
+      let url = new URL(window.location.toString());
       url.search = '';
 
-      window.history.pushState({}, '', url);
+      const loginRedirectUrl = await sessionManager.getSessionItemBrowser('post_login_redirect_url');
+      if (loginRedirectUrl) {
+        url = new URL(loginRedirectUrl);
+        await sessionManager.removeSessionItemBrowser('post_login_redirect_url');
+      }
+
+      window.history.pushState({}, '', url.toString());
     } catch (e) {
       console.log(e);
     }
