@@ -19,7 +19,7 @@ import module to your app module
 import { KindeAngularModule } from 'kinde-angular';
 ```
 
-Add KindeModule to your imports if using NgModules
+Add KindeModule to your imports
 
 ```typescript
 @NgModule({
@@ -88,7 +88,7 @@ Use feature guard
 }]
 ```
 
-Use canActivate auth guard
+Use canActivate auth guarda
 
 ```typescript
 [{
