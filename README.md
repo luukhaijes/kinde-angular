@@ -11,13 +11,15 @@ This package is in **beta**, for issues and feature requests please use [GitHub 
 npm i kinde-angular
 ```
 
+## NgModule Application 
+
 import module to your app module
 
 ```typescript
 import { KindeAngularModule } from 'kinde-angular';
 ```
 
-Add KindeModule to your imports
+Add KindeModule to your imports if using NgModules
 
 ```typescript
 @NgModule({
@@ -38,6 +40,29 @@ Add KindeModule to your imports
 export class AppModule {
 }
 ```
+
+## Standalone Application 
+
+update main.ts with:
+
+```typescript
+import { provideKinde } from 'kinde-angular';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideKinde({
+      clientId: 'client_id_here',
+      authDomain: 'https://domain.kinde.com',
+      redirectURL: 'http://localhost:4200/',
+      logoutRedirectURL: 'http://localhost:4200/',
+    })
+  ],
+}).catch((err) => console.error(err));
+```
+
+## Use
+
+### Service injections
 
 Add KindeService to your component via contructor or Inject method
 
