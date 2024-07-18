@@ -88,7 +88,7 @@ Use feature guard
 }]
 ```
 
-Use canActivate auth guarda
+Use canActivate auth guard
 
 ```typescript
 [{
