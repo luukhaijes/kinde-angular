@@ -2,7 +2,7 @@
 
 Kinde integration for Angular
 
-This package is in **beta**, for issues and feature requests please use [GitHub Issues](https://github.com/luukhaijes/kinde-angular/issues)
+For issues and feature requests please use [GitHub Issues](https://github.com/luukhaijes/kinde-angular/issues)
 
 ## Quick setup
 
