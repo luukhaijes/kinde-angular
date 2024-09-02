@@ -4,7 +4,7 @@
   "peerDependencies": {
     "@angular/common": ">=17.0.0",
     "@angular/core": ">=17.0.0",
-    "@kinde-oss/kinde-typescript-sdk": ">=2.5.0",
+    "@kinde-oss/kinde-typescript-sdk": "^2.8.0",
     "es-cookie": "^1.4.0"
   },
   "dependencies": {

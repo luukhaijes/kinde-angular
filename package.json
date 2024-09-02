@@ -19,7 +19,7 @@
     "@angular/platform-browser": "^18.2.1",
     "@angular/platform-browser-dynamic": "^18.2.1",
     "@angular/router": "^18.2.1",
-    "@kinde-oss/kinde-typescript-sdk": "^2.9.1",
+    "@kinde-oss/kinde-typescript-sdk": "^2.8.0",
     "es-cookie": "^1.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
