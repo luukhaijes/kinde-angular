@@ -15,9 +15,9 @@ import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { KindeClient } from "./interfaces/kinde-client.interface";
 import { AuthStateService } from "./auth-state.service";
 import { ClaimTokenType, FlagType, GetFlagType, RegisterURLOptions, UserType } from "@kinde-oss/kinde-typescript-sdk";
-import { LOCATION_TOKEN } from "./tokens/location.token";
 import { IClaim } from "./interfaces/claim.interface";
 import { sessionManager } from "./session-manager";
+import { DOCUMENT, Location } from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,8 @@ export class KindeAngularService implements OnDestroy {
 
   constructor(
     @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
-    @Inject(LOCATION_TOKEN) private location: Location,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(Location) private location: Location,
     private authState: AuthStateService
   ) {
     this.shouldHandleCallback()
@@ -98,21 +99,21 @@ export class KindeAngularService implements OnDestroy {
     if (options?.post_login_redirect_url) {
       await sessionManager.setSessionItemBrowser('post_login_redirect_url', options.post_login_redirect_url);
     }
-    this.location.href = loginUrl.href;
+    this.document.location.href = loginUrl.href;
   }
 
   async logout(): Promise<void> {
     const logoutUrl = await this.kindeClient.logout();
-    this.location.href = logoutUrl.href;
+    this.document.location.href = logoutUrl.href;
   }
 
   async register(options?: RegisterURLOptions): Promise<void> {
     const registerUrl = await this.kindeClient.register(options);
-    this.location.href = registerUrl.href;
+    this.document.location.href = registerUrl.href;
   }
 
   private shouldHandleCallback(): Observable<boolean> {
-    return of(this.location.search)
+    return of(this.document.location.search)
       .pipe(
         map(search => new URLSearchParams(search)),
         map(params => params.has('code') || params.has('state'))
@@ -121,10 +122,10 @@ export class KindeAngularService implements OnDestroy {
 
   async handleCallback(): Promise<void> {
     try {
-      await this.kindeClient.handleRedirectToApp(new URL(window.location.toString()));
+      await this.kindeClient.handleRedirectToApp(new URL(this.document.location.href));
       const token = await this.kindeClient.getToken();
       this.authState.setAccessToken(token);
-      let url = new URL(window.location.toString());
+      let url = new URL(this.document.location.href);
       url.search = '';
 
       const loginRedirectUrl = await sessionManager.getSessionItemBrowser('post_login_redirect_url');
@@ -132,8 +133,8 @@ export class KindeAngularService implements OnDestroy {
         url = new URL(loginRedirectUrl);
         await sessionManager.removeSessionItemBrowser('post_login_redirect_url');
       }
-
-      window.history.pushState({}, '', url.toString());
+      this.document.location.href = url.href;
+      this.location.go(url.toString());
     } catch (e) {
       console.log(e);
     }
