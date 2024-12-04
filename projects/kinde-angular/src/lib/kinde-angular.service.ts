@@ -33,7 +33,7 @@ export class KindeAngularService implements OnDestroy {
   constructor(
     @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(Location) private location: Location,
+    private location: Location,
     private authState: AuthStateService
   ) {
     this.shouldHandleCallback()
