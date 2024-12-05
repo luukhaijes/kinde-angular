@@ -1,3 +1,4 @@
+import { DOCUMENT, Location } from "@angular/common";
 import { TestBed } from '@angular/core/testing';
 import { KindeAngularService } from './kinde-angular.service';
 import { KindeClient } from './interfaces/kinde-client.interface';
@@ -5,8 +6,6 @@ import { AuthStateService } from './auth-state.service';
 import { UserType } from '@kinde-oss/kinde-typescript-sdk';
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
 import { sessionManager } from "./session-manager";
-import {SpyLocation} from '@angular/common/testing';
-import {DOCUMENT, Location} from "@angular/common";
 
 jest.mock('./session-manager', () => ({
   sessionManager: {
