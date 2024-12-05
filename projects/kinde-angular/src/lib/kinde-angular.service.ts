@@ -17,7 +17,7 @@ import { AuthStateService } from "./auth-state.service";
 import { ClaimTokenType, FlagType, GetFlagType, RegisterURLOptions, UserType } from "@kinde-oss/kinde-typescript-sdk";
 import { IClaim } from "./interfaces/claim.interface";
 import { sessionManager } from "./session-manager";
-import { DOCUMENT, Location } from "@angular/common";
+import { DOCUMENT, isPlatformBrowser, Location } from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
