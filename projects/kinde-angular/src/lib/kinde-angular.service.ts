@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import {
-  defer,
+  defer, filter,
   from,
   iif,
   map,
@@ -31,13 +31,14 @@ export class KindeAngularService implements OnDestroy {
   accessToken$: Observable<string | null> = this.authState.accessToken$;
 
   constructor(
-    @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient,
+    @Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient | null,
     @Inject(DOCUMENT) private document: Document,
     private location: Location,
     private authState: AuthStateService
   ) {
     this.shouldHandleCallback()
       .pipe(
+        filter(x => this.kindeClient !== null),
         switchMap(shouldHandleCallback =>
           iif(
             () => shouldHandleCallback,
@@ -60,10 +61,11 @@ export class KindeAngularService implements OnDestroy {
   getClaim<T>(claim: string, type?: ClaimTokenType): Observable<IClaim<T> | null> {
     // todo: make reusable function to handle isAuthenticated
     return this.isAuthenticated$.pipe(
+      filter(_ => this.kindeClient !== null),
       switchMap(isAuthenticated =>
         iif(
           () => isAuthenticated,
-          from(this.kindeClient.getClaim(claim, type))  as Observable<IClaim<T>>,
+          from(this.kindeClient!.getClaim(claim, type))  as Observable<IClaim<T>>,
           of(null)
         )
     ));
@@ -72,20 +74,23 @@ export class KindeAngularService implements OnDestroy {
   getUserOrganizations(): Observable<{ orgCodes: string[] }> {
     // todo: check L59
     return this.isAuthenticated$.pipe(
+      filter(_ => this.kindeClient !== null),
       switchMap(isAuthenticated =>
         iif(
           () => isAuthenticated,
-          from(this.kindeClient.getUserOrganizations()),
+          from(this.kindeClient!.getUserOrganizations()),
           of({ orgCodes: [] })
         )
     ));
   }
 
   getAccessToken(): Promise<string> {
+    if(!this.kindeClient) throw new Error("kindeClient is null");
     return this.kindeClient.getToken();
   }
 
   getFeatureFlag(code: string, defaultValue?: string | number | boolean | undefined, flagType?: keyof FlagType): Promise<GetFlagType> {
+    if(!this.kindeClient) throw new Error("kindeClient is null");
     return this.kindeClient.getFlag(code, defaultValue, flagType);
   }
 
@@ -95,6 +100,7 @@ export class KindeAngularService implements OnDestroy {
   }
 
   async login(options?: RegisterURLOptions): Promise<void> {
+    if(!this.kindeClient) throw new Error("kindeClient is null");
     const loginUrl = await this.kindeClient.login(options);
     if (options?.post_login_redirect_url) {
       await sessionManager.setSessionItemBrowser('post_login_redirect_url', options.post_login_redirect_url);
@@ -103,11 +109,13 @@ export class KindeAngularService implements OnDestroy {
   }
 
   async logout(): Promise<void> {
+    if(!this.kindeClient) throw new Error("kindeClient is null");
     const logoutUrl = await this.kindeClient.logout();
     this.document.location.href = logoutUrl.href;
   }
 
   async register(options?: RegisterURLOptions): Promise<void> {
+    if(!this.kindeClient) throw new Error("kindeClient is null");
     const registerUrl = await this.kindeClient.register(options);
     this.document.location.href = registerUrl.href;
   }
@@ -122,8 +130,8 @@ export class KindeAngularService implements OnDestroy {
 
   async handleCallback(): Promise<void> {
     try {
-      await this.kindeClient.handleRedirectToApp(new URL(this.document.location.href));
-      const token = await this.kindeClient.getToken();
+      await this.kindeClient!.handleRedirectToApp(new URL(this.document.location.href));
+      const token = await this.kindeClient!.getToken();
       this.authState.setAccessToken(token);
       let url = new URL(this.document.location.href);
       url.search = '';
