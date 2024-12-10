@@ -38,7 +38,7 @@ export class KindeAngularService implements OnDestroy {
   ) {
     this.shouldHandleCallback()
       .pipe(
-        filter(x => this.kindeClient !== null),
+        filter(_ => this.kindeClient !== null),
         switchMap(shouldHandleCallback =>
           iif(
             () => shouldHandleCallback,
