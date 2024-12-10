@@ -65,7 +65,7 @@ export class KindeAngularService implements OnDestroy {
       switchMap(isAuthenticated =>
         iif(
           () => isAuthenticated,
-          from(this.kindeClient!.getClaim(claim, type))  as Observable<IClaim<T>>,
+          from(this.kindeClient!.getClaim(claim, type)) as Observable<IClaim<T>>,
           of(null)
         )
     ));
