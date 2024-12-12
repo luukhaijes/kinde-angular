@@ -50,13 +50,13 @@ export class AuthStateService {
 
   isLoading$ = this.isLoadingSubject$.asObservable();
   isAuthenticatedStream$ = this.isLoading$.pipe(
-    filter(isLoading => !isLoading),
+    filter(isLoading => !isLoading && this.kindeClient !== null),
     distinctUntilChanged(),
     switchMap(() =>
       merge(
-        defer(() => this.kindeClient.isAuthenticated()),
+        defer(() => this.kindeClient!.isAuthenticated()),
         this.accessTokenStream$.pipe(
-          mergeMap(() => this.kindeClient.isAuthenticated()),
+          mergeMap(() => this.kindeClient!.isAuthenticated()),
         )
       )
     )
@@ -68,30 +68,33 @@ export class AuthStateService {
   );
 
   private _userCache$ = this.isAuthenticatedStream$.pipe(
+    filter(_ => this.kindeClient !== null),
     switchMap(isAuthenticated =>
-      isAuthenticated ? this.kindeClient.getUser() : of(null)
+      isAuthenticated ? this.kindeClient!.getUser() : of(null)
     ),
     shareReplay(1)
   );
 
   user$ = this.isAuthenticatedStream$.pipe(
+    filter(_ => this.kindeClient !== null),
     combineLatestWith(this._userCache$),
     concatMap(([isAuthenticated, cachedUser]) => {
         if (cachedUser) {
           return of(cachedUser)
         }
-        return isAuthenticated ? this.kindeClient.getUserProfile() : of(null)
+        return isAuthenticated ? this.kindeClient!.getUserProfile() : of(null)
       }
     ),
   );
 
   accessToken$ = this.isAuthenticatedStream$.pipe(
+    filter(_ => this.kindeClient !== null),
     concatMap(isAuthenticated =>
-      isAuthenticated ? this.kindeClient.getToken() : of(null)
+      isAuthenticated ? this.kindeClient!.getToken() : of(null)
     ),
   )
 
-  constructor(@Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient) {
+  constructor(@Inject(KINDE_FACTORY_TOKEN) private kindeClient: KindeClient | null) {
   }
 
   setIsLoading(isLoading: boolean): void {

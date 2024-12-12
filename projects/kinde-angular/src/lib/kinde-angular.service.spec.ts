@@ -1,10 +1,10 @@
+import { DOCUMENT, Location } from "@angular/common";
 import { TestBed } from '@angular/core/testing';
 import { KindeAngularService } from './kinde-angular.service';
 import { KindeClient } from './interfaces/kinde-client.interface';
 import { AuthStateService } from './auth-state.service';
 import { UserType } from '@kinde-oss/kinde-typescript-sdk';
 import { KINDE_FACTORY_TOKEN } from "./kinde-client-factory.service";
-import { LOCATION_TOKEN } from "./tokens/location.token";
 import { sessionManager } from "./session-manager";
 
 jest.mock('./session-manager', () => ({
@@ -15,6 +15,7 @@ jest.mock('./session-manager', () => ({
 }))
 
 describe('KindeAngularService', () => {
+
   let kindeClientMock = {
     isAuthenticated: () => Promise.resolve(true),
     getUser: () => Promise.resolve({ family_name: 'test' } as UserType),
@@ -25,10 +26,16 @@ describe('KindeAngularService', () => {
     handleRedirectToApp: jest.fn().mockResolvedValue(undefined),
     getFlag: jest.fn(),
   };
-  let locationSpy = {
-    href: '',
-    search: '',
+  let documentSpy = { location: {
+      href: 'http://localhost:4200/',
+      search: '',
+    }
   };
+
+  let locationMock = {
+    go: jest.fn(),
+  };
+
   const createService = () => TestBed.inject(KindeAngularService);
 
   beforeEach(() => {
@@ -41,8 +48,10 @@ describe('KindeAngularService', () => {
           useValue: kindeClientMock as unknown as KindeClient
         },
         {
-          provide: LOCATION_TOKEN,
-          useValue: locationSpy
+          provide: DOCUMENT, useValue: documentSpy
+        },
+        {
+          provide: Location, useValue: locationMock as unknown as Location
         },
         KindeAngularService,
         AuthStateService
@@ -89,19 +98,19 @@ describe('KindeAngularService', () => {
   it('should return login url correctly', async () => {
     const service = createService();
     await service.login();
-    expect(locationSpy.href).toBe('https://kinde.com/v2/login');
+    expect(documentSpy.location.href).toBe('https://kinde.com/v2/login');
   });
 
   it('should return logout url correctly', async () => {
     const service = createService();
     await service.logout();
-    expect(locationSpy.href).toBe('https://kinde.com/v2/logout');
+    expect(documentSpy.location.href).toBe('https://kinde.com/v2/logout');
   });
 
   it('should return register url correctly', async () => {
     const service = createService();
     await service.register();
-    expect(locationSpy.href).toBe('https://kinde.com/v2/register');
+    expect(documentSpy.location.href).toBe('https://kinde.com/v2/register');
   });
 
   it('shouldHandleCallback returns if params exist', (done) => {
@@ -110,7 +119,7 @@ describe('KindeAngularService', () => {
       code: 'testCode',
       state: 'testState'
     };
-    locationSpy.search = `?code=${ mockCallbackParams.code }&state=${ mockCallbackParams.state }`;
+    documentSpy.location.search = `?code=${ mockCallbackParams.code }&state=${ mockCallbackParams.state }`;
 
     (service as any).shouldHandleCallback().subscribe((shouldHandle: boolean) => {
       expect(shouldHandle).toBe(true);
@@ -127,7 +136,7 @@ describe('KindeAngularService', () => {
       code: 'testCode',
       state: 'testState'
     };
-    locationSpy.search = `?code=${ mockCallbackParams.code }&state=${ mockCallbackParams.state }`;
+    documentSpy.location.search = `?code=${ mockCallbackParams.code }&state=${ mockCallbackParams.state }`;
     createService();
 
     expect(kindeClientMock.handleRedirectToApp).toHaveBeenCalled();
@@ -149,7 +158,6 @@ describe('KindeAngularService', () => {
   });
 
   it('should use the post_logout_redirect_url if available', async () => {
-    window.history.pushState = jest.fn();
     const url = 'https://kinde.com/dashboard';
 
     (sessionManager.getSessionItemBrowser as any).mockReturnValue(url);
@@ -161,6 +169,6 @@ describe('KindeAngularService', () => {
     expect(sessionManager.removeSessionItemBrowser).toHaveBeenCalled()
     expect(sessionManager.removeSessionItemBrowser).toHaveBeenCalledWith('post_login_redirect_url');
 
-    expect(window.history.pushState).toHaveBeenCalledWith({}, "", url);
+    expect(locationMock.go).toHaveBeenCalledWith(url);
   });
 });
