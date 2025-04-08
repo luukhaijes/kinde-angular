@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, PLATFORM_ID } from '@angular/core';
 import { KindeAngularService } from "./kinde-angular.service";
 import { KINDE_FACTORY_TOKEN, KindeClientFactory } from "./kinde-client-factory.service";
 import { KindeConfigInterface } from "./interfaces/kinde-config.interface";
@@ -18,7 +18,7 @@ export class KindeAngularModule {
         {
           provide: KINDE_FACTORY_TOKEN,
           useFactory: KindeClientFactory.createClient,
-          deps: [kindeConfigToken]
+          deps: [kindeConfigToken, PLATFORM_ID]
         }
       ]
     }
