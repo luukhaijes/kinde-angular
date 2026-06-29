@@ -85,6 +85,22 @@ export class KindeAngularService implements OnDestroy {
     ));
   }
 
+  getOrganization(): Observable<{ orgCode: string | null }> {
+    return this.isAuthenticated$.pipe(
+      filter(_ => this.kindeClient !== null),
+      switchMap(isAuthenticated =>
+        iif(
+          () => isAuthenticated,
+          from(this.kindeClient!.getOrganization()),
+          of({ orgCode: null })
+        )
+    ));
+  }
+
+  getPermissions() {
+    return this.kindeClient?.getPermissions();
+  }
+
   getAccessToken(): Promise<string> {
     if(!this.kindeClient) throw new Error("kindeClient is null");
     return this.kindeClient.getToken();
@@ -118,6 +134,12 @@ export class KindeAngularService implements OnDestroy {
   async register(options?: RegisterURLOptions): Promise<void> {
     if(!this.kindeClient) throw new Error("kindeClient is null");
     const registerUrl = await this.kindeClient.register(options);
+    this.document.location.href = registerUrl.href;
+  }
+
+  async registerWithOrg(options?: RegisterURLOptions): Promise<void> {
+    if(!this.kindeClient) throw new Error("kindeClient is null");
+    const registerUrl = await this.kindeClient.createOrg(options);
     this.document.location.href = registerUrl.href;
   }
 
